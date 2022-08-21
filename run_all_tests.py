@@ -9,7 +9,7 @@ BROWSER_CHROME          = 'chrome'
 
 class OsController(ABC):
     @abstractmethod
-    def get_cmd_list(self):
+    def execute_cmd(self):
         pass
 
     @abstractmethod
@@ -24,8 +24,10 @@ class WindowsController(OsController):
     def __init__(self, venv_dir):
         self.venv_dir = venv_dir
 
-    def get_cmd_list(self):
-        return ['.venv\\Scripts\\activate.bat', '&', 'python', '-m', 'robot', '--variable', f'G_RESOURCES:{os.getcwd()}\\resources', 'tests\\', '&', 'deactivate']
+    def execute_cmd(self):
+        run_cmd = ['.venv\\Scripts\\activate.bat', '&', 'python', '-m', 'robot', '--variable',
+                   f'G_RESOURCES:{os.getcwd()}\\resources', 'tests\\', '&', 'deactivate']
+        subprocess.check_call(run_cmd)
 
     def get_python(self):
         return f'{self.venv_dir}\\Scripts\\python.exe'
@@ -37,8 +39,9 @@ class LinuxController(OsController):
     def __init__(self, venv_dir):
         self.venv_dir = venv_dir
 
-    def get_cmd_list(self):
-        ['.venv/bin/activate', '&', 'python', '-m', 'robot', '--variable', f'G_RESOURCES:{os.getcwd()}/resources', 'tests/', '&', 'deactivate']
+    def execute_cmd(self):
+        run_cmd = f'source .venv/bin/activate; python3 -m robot --variable G_RESOURCES:{os.getcwd()}/resources tests/; deactivate'
+        subprocess.check_call(run_cmd, shell=True, executable='/bin/bash')
 
     def get_python(self):
         return f'{self.venv_dir}/bin/python'
@@ -98,7 +101,6 @@ if __name__ == "__main__":
     install_dependencies(os_controller.get_python(), REQUIREMENTS_FILE_NAME)
     install_webdriver(os_controller.get_python(), os_controller.get_webdrivermanager_os(), BROWSER_CHROME)
 
-    run_cmd = os_controller.get_cmd_list()
-    subprocess.check_call(run_cmd)
+    os_controller.execute_cmd()
 
     print('Finished!')
