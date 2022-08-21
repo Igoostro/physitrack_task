@@ -38,20 +38,20 @@ class LinuxController(OsController):
         self.venv_dir = venv_dir
 
     def get_cmd_list(self):
-        raise NotImplemented("Not implemented")
+        ['.venv/bin/activate', '&', 'python', '-m', 'robot', '--variable', f'G_RESOURCES:{os.getcwd()}/resources', 'tests/', '&', 'deactivate']
 
     def get_python(self):
-        raise NotImplemented("Not implemented")
+        return f'{self.venv_dir}/bin/python'
 
     def get_webdrivermanager_os(self):
-        raise NotImplemented("Not implemented")
+        return 'linux'
 
 class MacController(LinuxController):
     def __init__(self, venv_dir):
         super().__init__(self, venv_dir)
 
     def get_webdrivermanager_os(self):
-        raise NotImplemented("Not implemented")
+        return 'mac'
 
 class OsControllerFactory:
     @staticmethod
