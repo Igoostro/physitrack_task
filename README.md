@@ -14,11 +14,11 @@ It is expected, that machine has preinstalled:
 All other dependencies will be automatically downloaded and isolated in the virtual env while running tests.
 
 ## Test Run
-Windows:
+Windows:  
 `python run_all_tests.py`  
 *Note: Assuming that python is added to the `$PATH` and points to Python3.9 installation*
 
-Linux/Mac
+Linux/Mac  
 `python3 run_all_tests.py`  
 *Note: Assuming that python3 is added to the `$PATH` and points to Python3.9 installation*  
 *Note: Mac path is not tested*
