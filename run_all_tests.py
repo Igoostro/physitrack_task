@@ -15,7 +15,7 @@ class OsController(ABC):
     @abstractmethod
     def get_python(self):
         pass
-    
+
     @abstractmethod
     def get_webdrivermanager_os(self):
         pass
@@ -70,7 +70,6 @@ class OsControllerFactory:
             return MacController(venv_dir)
 
         raise RuntimeError(f'Unsupported platform: {platform}')
-
 
 def is_cwd_ok():
     return os.path.isfile(REQUIREMENTS_FILE_NAME) and os.path.isfile(__file__)
